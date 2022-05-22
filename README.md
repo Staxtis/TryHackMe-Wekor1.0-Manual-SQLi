@@ -13,6 +13,7 @@ Hello i am 0x000 from THM, and this is my first write-up.
 
 The main reason i am writing this walk-through is the following:
 
+
 After finishing any interesting CTF room i am looking for write-ups to see different solutions.
 
 In this room, every walk-through was almost the same and everyone uses SQLMap to dump the databases.
@@ -21,13 +22,16 @@ Ok we all love SQLMap but tell this to OffSec which insists (rightfully)
 
 to learn MANUAL SQL Injection and SQLMap Is Banned!!!
 
+
 So i made this write-up to walk you through the manual way.
 
 This is a medium difficulty room so i will skip basic things like how to write to /etc/hosts and how to scan with Nmap!
 
+
 First of all the creator of the room instruct us to add “wekor.thm” to /etc/hosts
 
 This indicates that maybe there are other vhosts and there is at least one webpage.
+
 
 Nmap gave us nothing special, so for now i will proceed with vhost and webpage enumeration.
 
