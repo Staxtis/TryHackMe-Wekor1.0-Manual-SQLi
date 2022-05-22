@@ -6,7 +6,9 @@ This is a manual SQL Injection Walkthrough for the TryHackMe room, Wekor1.0
 TryHackMe | Wekor1.0 | Manual SQLi
 
 CTF ROOM:     https://tryhackme.com/room/wekorra
+
 THM PROFILE:  https://tryhackme.com/p/0x0000
+
 
 Hello i am 0x000 from THM, and this is my first write-up.
 
