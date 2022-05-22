@@ -5,7 +5,7 @@ This is a manual SQL Injection Walkthrough for the TryHackMe room, Wekor1.0
 
 TryHackMe | Wekor1.0 | Manual SQLi
 
-CTF ROOM:     https://tryhackme.com/room/wekorra
+CTF ROOM:     https://tryhackme.com/room/wekorra                               
 THM PROFILE:  https://tryhackme.com/p/0x0000
 
 
