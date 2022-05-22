@@ -14,15 +14,19 @@ Hello i am 0x000 from THM, and this is my first write-up.
 The main reason i am writing this walk-through is the following:
 
 After finishing any interesting CTF room i am looking for write-ups to see different solutions.
+
 In this room, every walk-through was almost the same and everyone uses SQLMap to dump the databases.
 
 Ok we all love SQLMap but tell this to OffSec which insists (rightfully)
+
 to learn MANUAL SQL Injection and SQLMap Is Banned!!!
 
 So i made this write-up to walk you through the manual way.
+
 This is a medium difficulty room so i will skip basic things like how to write to /etc/hosts and how to scan with Nmap!
 
 First of all the creator of the room instruct us to add “wekor.thm” to /etc/hosts
+
 This indicates that maybe there are other vhosts and there is at least one webpage.
 
 Nmap gave us nothing special, so for now i will proceed with vhost and webpage enumeration.
@@ -32,14 +36,15 @@ Nmap gave us nothing special, so for now i will proceed with vhost and webpage e
     80/tcp open http
 
 To scan for other vhosts:
-  gobuster vhost -u http://wekor.thm -w /usr/share/wordlists/dirb/big.txt
 
-Found:
-  site.wekor.thm
+	gobuster vhost -u http://wekor.thm -w /usr/share/wordlists/dirb/big.txt
+
+Found:``` site.wekor.thm ```
 
 Add the new vhost inside /etc/hosts
 
 With some basic manual enumeration i discovered /robots.txt
+
   http://wekor.thm/robots.txt
 
     User-agent: *
@@ -54,29 +59,38 @@ With some basic manual enumeration i discovered /robots.txt
     Disallow: /interesting
 
 Only /comingreallysoon Works and lands us in a page that prompts us to visit the latest website on /it-next
-  http://wekor.thm/it-next/
 
-Meanwhile, dirbusting http://site.wekor.thm found /wordpress/
-  http://site.wekor.thm/wordpress/
+	  http://wekor.thm/it-next/
+
+Meanwhile, dirbusting http://site.wekor.thm found ```/wordpress/```
+
+	  http://site.wekor.thm/wordpress/
 
 
 So we do have 2 webpages to enumerate.
+
 The WordPress site looks pretty default.
+
 Scanning with WPScan i found an Admin user.
+
 Lets enumerate the other webpage and if i got no luck then i will try brute forcing.
 
 The other webpage for CTF machine is overwhelming! CUDOS To the creator ❤ i loved it!
+
 Took me some time to check it all.
 
 Inside the shop section click on a product and add it to cart.
-Then, lower in the cart page, there is a coupon text box that act weirdly when i throw symbols inside.
-  http://wekor.thm/it-next/it_cart.php
 
-Type just a single-quote inside the textbox ' and the response is:
+Then, lower in the cart page, there is a coupon text box that act weirdly when i throw symbols inside.
+
+	  http://wekor.thm/it-next/it_cart.php
+
+Type just a single-quote inside the textbox ```'``` and the response is:
 
 ```“You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘%’’ at line 1”```
 
 It is vulnerable to SQL Injection!
+
 Lets Own it, Manually of course!
 
 The first error message we got, indicates that the back-end uses MySQL.
@@ -90,6 +104,7 @@ To find the Column count in the current table so that we can work with we type:
     ' OR 1=1 UNION ALL SELECT NULL
 
   Response:
+  
     “The used SELECT statements have a different number of columns”
 
 We continue adding NULL values until something returns without errors:
@@ -102,15 +117,17 @@ With three NULL Values we are good to go.
 
 We can now enumerate things like database version, hostname, current user, data directory path and many more.
 
-For example we can find MySQL version like so:
+For example 
 ```
+We can find MySQL version like so:
+
 'OR 1=1 UNION ALL SELECT NULL,NULL,@@version -- -
 	
   It is 5.7.32!
-  ```
+
 
 We can see who is the current user:
-```
+
 'OR 1=1 UNION ALL SELECT NULL,NULL,user() -- -
 	
   ITS ROOT!!!
@@ -248,7 +265,9 @@ Trigger the reverse shell accessing:
 
 
 ### We are In! ###
+
 ### We got Our Reverse Shell! ###
+
 
 Start manually enumerating the “low hanging fruits”
 
@@ -286,6 +305,7 @@ The way abusing the internal services is well described in other write-ups.
 
 
 Hitting ```uname -a``` i notice a very old distribution.
+
 I believe it is vulnerable to pwnkit. The pkexec vulnerability that made millions of ITs lose their sleep, so,
 
 Lets Try:
@@ -323,6 +343,7 @@ We can now read the flags:
     cat /root/root.txt
 
 Thats it!
+
 I hope you enjoy it!
 
 ~0x0000
