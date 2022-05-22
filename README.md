@@ -47,7 +47,7 @@ Found:``` site.wekor.thm ```
 
 Add the new vhost inside /etc/hosts
 
-With some basic manual enumeration i discovered /robots.txt
+With some basic manual enumeration i discovered ```/robots.txt```
 
   http://wekor.thm/robots.txt
 
@@ -62,7 +62,7 @@ With some basic manual enumeration i discovered /robots.txt
     Disallow: /comingreallysoon
     Disallow: /interesting
 
-Only /comingreallysoon Works and lands us in a page that prompts us to visit the latest website on /it-next
+Only ```/comingreallysoon``` Works and lands us in a page that prompts us to visit the latest website on ```/it-next```
 
 	  http://wekor.thm/it-next/
 
