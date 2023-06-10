@@ -210,7 +210,7 @@ To identify the hash navigate to:
 
 https://hashcat.net/wiki/doku.php?id=example_hashes
 
-Press Ctr+F to use ‘Find’ inside the page and type $P$
+Press Ctr+F to use ‘Find’ inside the page and type $P
 
     400 phpass, WordPress (MD5), Joomla (MD5)
 
